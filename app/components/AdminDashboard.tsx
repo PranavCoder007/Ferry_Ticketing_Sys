@@ -162,16 +162,6 @@ export default function AdminDashboard() {
             <p className="text-gray-900 text-base mb-4 font-medium">Available Seats: {ferry.availableSeats}</p>
             <div className="flex justify-between space-x-4">
               <button
-                onClick={() => {
-                  const updatedFerry = { ...ferry }
-                  updatedFerry.time = prompt('Enter new time:', ferry.time) || ferry.time
-                  handleUpdateFerry(ferry._id, updatedFerry)
-                }}
-                className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-4 rounded-lg text-base focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
-              >
-                Update
-              </button>
-              <button
                 onClick={() => handleCancelFerry(ferry._id)}
                 className="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-4 rounded-lg text-base focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
               >
