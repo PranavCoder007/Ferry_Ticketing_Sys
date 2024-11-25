@@ -1,15 +1,21 @@
-import { NextResponse, NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 import { connectToDatabase } from '../../../../../lib/mongodb';
 import { ObjectId } from 'mongodb';
 
 export async function DELETE(
-  request: NextRequest,
-  context: { params: { id: string } }
+  request: Request,
+  context: { params: Promise<{ id: string }> }
 ) {
-  // Await the params object before accessing its properties
-  const { id } = context.params;
+  // Await the params
+  const { id } = await context.params;
 
-  // Optional: Validate the ID format
+  if (!id) {
+    return NextResponse.json(
+      { message: 'ID is required' },
+      { status: 400 }
+    );
+  }
+
   if (!ObjectId.isValid(id)) {
     return NextResponse.json(
       { message: 'Invalid ID format' },
@@ -19,11 +25,11 @@ export async function DELETE(
 
   try {
     const { db } = await connectToDatabase();
-    const deleteResult = await db.collection('ferries').deleteOne({
+    const result = await db.collection('ferries').deleteOne({
       _id: new ObjectId(id),
     });
 
-    if (deleteResult.deletedCount === 0) {
+    if (result.deletedCount === 0) {
       return NextResponse.json(
         { message: 'No ferry found with the provided ID' },
         { status: 404 }
