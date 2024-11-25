@@ -1,40 +1,35 @@
-name: CI/CD for Next.js on Netlify
+name: CI/CD for Next.js
 
 on:
   push:
     branches:
-      - main # Trigger on push to the main branch
+      - main
   pull_request:
     branches:
-      - main # Trigger on pull requests to the main branch
+      - main
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Checkout the code
     - name: Checkout Code
       uses: actions/checkout@v3
 
-    # Step 2: Set up Node.js
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: 18 # Specify the Node.js version
+        node-version: 18
         cache: 'npm'
 
-    # Step 3: Install dependencies
     - name: Install Dependencies
       run: npm install
 
-    # Step 4: Run build
     - name: Build Next.js App
       run: npm run build
 
-    # Step 5: Deploy to Netlify
-    - name: Deploy to Netlify
-      run: npx netlify-cli deploy --dir=.next --prod
-      env:
-        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+    - name: Deploy to Vercel
+      uses: amondnet/vercel-action@v20
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-args: '--prod'
