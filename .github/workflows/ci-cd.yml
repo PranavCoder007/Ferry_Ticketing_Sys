@@ -1,9 +1,9 @@
-name: CI/CD for Next.js
+name: Deploy to Vercel
 
 on:
   push:
     branches:
-      - main
+      - main # Trigger on push to the main branch
 
 jobs:
   build-and-deploy:
@@ -18,7 +18,7 @@ jobs:
       with:
         node-version: 18
         cache: 'npm'
-        
+
     - name: Install Dependencies
       run: npm install
 
